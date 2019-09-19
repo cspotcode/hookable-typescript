@@ -287,7 +287,7 @@ namespace ts {
             readDirectory: maybeBind(host, host.readDirectory),
         };
         return hooks.decorateCompilerHost(compilerHost, {
-            method: 'createCompilerHostFromProgramHost',
+            method: "createCompilerHostFromProgramHost",
             host,
             getCompilerOptions,
             directoryStructureHost
@@ -383,7 +383,7 @@ namespace ts {
             );
         };
         return hooks.decorateWatchCompilerHost(result, {
-            method: 'createWatchCompilerHost',
+            method: "createWatchCompilerHost",
             system,
             createProgram,
             reportDiagnostic,
@@ -472,7 +472,7 @@ namespace ts {
         setGetSourceFileAsHashVersioned(host, system);
         changeCompilerHostLikeToUseCache(host, fileName => toPath(fileName, host.getCurrentDirectory(), host.getCanonicalFileName));
         return hooks.decorateCompilerHost(host, {
-            method: 'createIncrementalCompilerHost',
+            method: "createIncrementalCompilerHost",
             options,
             system
         });

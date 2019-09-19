@@ -4,7 +4,8 @@ namespace ts {
      * To install hooks into the compiler, assign a value to this field before
      * calling any ts APIs.
      */
-    export let __ts_hooks__: Hooks | undefined;
+    // tslint:disable-next-line:variable-name
+    export let __hooks__: Hooks | undefined;
 
     export interface Hooks {
         /** Mutate a new CompilerHost. */
@@ -51,16 +52,16 @@ namespace ts {
 
     export namespace hooks {
         export const decorateCompilerHost: NonNullable<Hooks["decorateCompilerHost"]> = (host, context) => {
-            if(ts.__ts_hooks__ && ts.__ts_hooks__.decorateCompilerHost) {
-                return ts.__ts_hooks__.decorateCompilerHost(host, context);
+            if (__hooks__ && __hooks__.decorateCompilerHost) {
+                return __hooks__.decorateCompilerHost(host, context);
             }
             else {
                 return host;
             }
         };
         export const decorateWatchCompilerHost: NonNullable<Hooks["decorateWatchCompilerHost"]> = (host, context) => {
-            if(ts.__ts_hooks__ && ts.__ts_hooks__.decorateWatchCompilerHost) {
-                return ts.__ts_hooks__.decorateWatchCompilerHost(host, context);
+            if (__hooks__ && __hooks__.decorateWatchCompilerHost) {
+                return __hooks__.decorateWatchCompilerHost(host, context);
             }
             else {
                 return host;
