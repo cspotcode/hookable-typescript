@@ -7,6 +7,8 @@
     "references": [],
 
     "files": [
+        "hooks.ts",
+
         "core.ts",
         "debug.ts",
         "performance.ts",

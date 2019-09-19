@@ -251,7 +251,7 @@ namespace ts {
     export function createCompilerHostFromProgramHost(host: ProgramHost<any>, getCompilerOptions: () => CompilerOptions, directoryStructureHost: DirectoryStructureHost = host): CompilerHost {
         const useCaseSensitiveFileNames = host.useCaseSensitiveFileNames();
         const hostGetNewLine = memoize(() => host.getNewLine());
-        return {
+        const compilerHost: CompilerHost = {
             getSourceFile: (fileName, languageVersion, onError) => {
                 let text: string | undefined;
                 try {
@@ -286,6 +286,12 @@ namespace ts {
             createHash: maybeBind(host, host.createHash),
             readDirectory: maybeBind(host, host.readDirectory),
         };
+        return hooks.decorateCompilerHost(compilerHost, {
+            method: 'createCompilerHostFromProgramHost',
+            host,
+            getCompilerOptions,
+            directoryStructureHost
+        });
 
         function ensureDirectoriesExist(directoryPath: string) {
             if (directoryPath.length > getRootLength(directoryPath) && !host.directoryExists!(directoryPath)) {
@@ -376,7 +382,13 @@ namespace ts {
                 )
             );
         };
-        return result;
+        return hooks.decorateWatchCompilerHost(result, {
+            method: 'createWatchCompilerHost',
+            system,
+            createProgram,
+            reportDiagnostic,
+            reportWatchStatus
+        });
     }
 
     /**
@@ -455,11 +467,15 @@ namespace ts {
     }
 
     export function createIncrementalCompilerHost(options: CompilerOptions, system = sys): CompilerHost {
-        const host = createCompilerHostWorker(options, /*setParentNodes*/ undefined, system);
+        let host = createCompilerHostWorker(options, /*setParentNodes*/ undefined, system);
         host.createHash = maybeBind(system, system.createHash);
         setGetSourceFileAsHashVersioned(host, system);
         changeCompilerHostLikeToUseCache(host, fileName => toPath(fileName, host.getCurrentDirectory(), host.getCanonicalFileName));
-        return host;
+        return hooks.decorateCompilerHost(host, {
+            method: 'createIncrementalCompilerHost',
+            options,
+            system
+        });
     }
 
     export interface IncrementalProgramOptions<T extends BuilderProgram> {
