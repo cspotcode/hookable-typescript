@@ -1,6 +1,11 @@
 Experiment to make extremely minimal changes to Typescript's codebase to add
 extra APIs for hooking into the compiler.
 
+See also:
+https://github.com/TypeStrong/discussions/issues/5
+
+---
+
 By keeping the code changes minimal, we hopefully avoid painful merges with upstream
 TypeScript changes.
 
