@@ -23,3 +23,10 @@ Drop-in replacement for the `typescript` package from npm. (language service, co
 One-stop-shop for augmenting the compiler.  So many tools reinvent the wheel, supporting transformers, compiler
 behavior changes, etc.  I think it would be helpful to the community if all these use-cases could be implemented on top
 of a single plugin API.
+
+---
+
+## TODOs
+
+How to expose a hooking API from the CLI?  It's a single file which will immediately invoke its CLI handler.
+We need a way to insert hooks *before* the CLI handler.

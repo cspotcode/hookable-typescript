@@ -1,4 +1,3 @@
-/* @internal */
 namespace ts {
     /**
      * Partial interface of the System thats needed to support the caching of directory structure
@@ -16,7 +15,10 @@ namespace ts {
         createDirectory?(path: string): void;
         writeFile?(path: string, data: string, writeByteOrderMark?: boolean): void;
     }
+}
 
+/* @internal */
+namespace ts {
     interface FileAndDirectoryExistence {
         fileExists: boolean;
         directoryExists: boolean;

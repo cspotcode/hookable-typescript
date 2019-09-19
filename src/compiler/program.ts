@@ -69,7 +69,7 @@ namespace ts {
     export function createCompilerHost(options: CompilerOptions, setParentNodes?: boolean): CompilerHost {
         const compilerHost: CompilerHost = createCompilerHostWorker(options, setParentNodes);
         return hooks.decorateCompilerHost(compilerHost, {
-            method: 'createCompilerHost',
+            method: "createCompilerHost",
             options,
             setParentNodes
         });

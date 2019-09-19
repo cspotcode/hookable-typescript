@@ -558,6 +558,10 @@ const publishNightly = () => exec("npm", ["publish", "--tag", "next"]);
 task("publish-nightly", series(task("clean"), task("LKG"), task("clean"), task("runtests-parallel"), publishNightly));
 task("publish-nightly").description = "Runs `npm publish --tag next` to create a new nightly build on npm";
 
+const packageNightly = () => exec("npm", ["package"]);
+task("package-nightly", series(task("clean"), task("LKG"), task("clean"), task("runtests-parallel"), packageNightly));
+task("package-nightly").description = "Runs `npm package` to create a local tarball build";
+
 // TODO(rbuckton): The problem with watching in this way is that a change in compiler/ will result
 // in cascading changes in other projects that may take differing amounts of times to complete. As
 // a result, the watch may accidentally trigger early, so we have to set a significant delay. An
