@@ -4,35 +4,65 @@ extra APIs for hooking into the compiler.
 See also:
 https://github.com/TypeStrong/discussions/issues/5
 
----
+## Motivation
 
-By keeping the code changes minimal, we hopefully avoid painful merges with upstream
-TypeScript changes.  When a new release of Typescript comes out, we should be able
-to publish a new hookable-typescript immediately.
-
-These hooks are meant to be used by an external module to implement a more extensive
-plugin system on top of the compiler.
-
-## Potential use-cases:
-
-* yarn pnp support
-* `ttypescript`-style transformers support
-* Custom diagnostic filtering.  Strip diagnostics that are annoying, or
-change their severity.
-
-## Goals:
-
-Facilitate drop-in replacements for the `typescript` package from npm. (language service, compiler API, CLI tool, the whole thing)
+Enable the creation of `pluggable-typescript`, which will be a drop-in replacement for the `typescript` package, providing language service, compiler API, CLI tool, the whole thing.
 
 One-stop-shop for augmenting the compiler.  So many tools reinvent the wheel, supporting transformers, compiler
 behavior changes, etc.  I think it would be helpful to the community if all these use-cases could be implemented on top
-of a single plugin API.  hookable-typescript is *not* such a plugin API, but it *enables* one to be written.
+of a single plugin API.  hookable-typescript is *not* such a plugin API, but it *enables* one to be written, like the
+hypothetical `pluggable-typescript`.
+
+## What is `hookable-typescript` vs `pluggable-typescript`?
+
+`hookable-typescript` is a patched copy of `typescript` with hooks.  We publish a new `hookable-typescript`
+for each new release of `typescript`.
+
+`pluggable-typescript` (hypothetical; does not exist yet) is a drop-in replacement for `typescript`
+that supports a plugin system. (very different and more powerful than language service plugins)
+It uses `hookable-typescript` as the underlying TypeScript implementation.
+
+Most users will use `pluggable-typescript` and configure it with plugins via their `tsconfig.json`.  They will not know
+or care about `hookable-typescript`.  For example, they install `pluggable-typescript@3.6.3`, which depends on `hookable-typescript@3.6.3`,
+and behaves identically to `typescript@3.6.3`. (but with added plugin behaviors)
+
+Tools like `ts-loader` support alternate compiler implementations.  These tools can be told to use `pluggable-typescript`.
+In this way, `ts-loader` does not need to support custom transformers or diagnostics filtering because plugins can handle that.
+`ts-loader` can be simpler and focus solely on being a good webpack loader.
+
+---
+
+## Why this approach?  Why 2 modules?
+
+Not everything can be accomplished by monkey-patching the official typescript module.
+Some things require code changes.
+
+I think it would get very messy making large changes to the Typescript codebase, since we
+want to keep up-to-date with all upstream changes.
+
+By keeping the code changes as tiny as possible, we hopefully avoid painful merges with upstream
+TypeScript changes.  When a new release of Typescript comes out, we should be able
+to publish a new version of `hookable-typescript` immediately.
+
+`pluggable-typescript` can live in its own repository without the weight of Typescript's
+massive git history, coding standards, and build process.  The bulk of development work
+will happen in `pluggable-typescript`.  It will be built against
+`hookable-typescript`'s API.
+
+## Potential use-cases
+
+Plugins might be written to do the following:
+
+* yarn-pnp support: `"moduleResolution": "yarn-pnp"`
+* `ttypescript`-style transformers support
+* Custom diagnostic filtering.  Strip diagnostic codes that are annoying, or
+change their severity.
 
 ---
 
 ## Example usage
 
-Suppose you want to implement a drop-in replacement for the `typescript` module that
+Suppose you want to implement `pluggable-typescript`, a drop-in replacement for the `typescript` module that
 supports a plugin API.  To be a true drop-in replacement, it needs to:
 
 * a) Implement the typescript library: `require('my-pluggable-typescript')` should expose the same API as `require('typescript')`
@@ -44,8 +74,8 @@ This is the minimum amount of code required to load hookable-typescript and dele
 this will function identically to vanilla Typescript.
 
 Step 2: Modify the boilerplate files to install hooks by setting `ts.__hooks__`
-Whatever behavioral changes you want to implement: a custom plugin architecture, support for custom transformers,
-diagnostic filtering, etc... it should all be implemented using the hooks provided.
+Whatever behavioral changes you want to implement -- in this case, a custom plugin architecture --
+should all be implemented using the hooks provided.
 
 If the hooks aren't sufficient for your use-case, we should add additional hooks.
 
