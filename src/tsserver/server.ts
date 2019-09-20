@@ -1,6 +1,10 @@
 // tslint:disable no-unnecessary-type-assertion (TODO: tslint can't find node types)
 
 namespace ts.server {
+    __startup__ = () => {
+
+    // intentionally do not indent to make merges easier
+
     const childProcess: {
         fork(modulePath: string, args: string[], options?: { execArgv: string[], env?: MapLike<string> }): NodeChildProcess;
         execFileSync(file: string, args: string[], options: { stdio: "ignore", env: MapLike<string> }): string | Buffer;
@@ -990,4 +994,6 @@ namespace ts.server {
     console.log = (...args) => logger.msg(args.length === 1 ? args[0] : args.join(", "), Msg.Info);
     console.warn = (...args) => logger.msg(args.length === 1 ? args[0] : args.join(", "), Msg.Err);
     console.error = (...args) => logger.msg(args.length === 1 ? args[0] : args.join(", "), Msg.Err);
+
+    };
 }

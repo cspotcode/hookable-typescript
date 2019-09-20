@@ -409,6 +409,9 @@ namespace ts {
     }
 }
 
+ts.__startup__ = () => {
+// Intentionally do not indent to make merges easier
+
 if (ts.Debug.isDebugging) {
     ts.Debug.enableDebugInfo();
 }
@@ -422,3 +425,4 @@ if (ts.sys.setBlocking) {
 }
 
 ts.executeCommandLine(ts.sys.args);
+};

@@ -7,6 +7,16 @@ namespace ts {
     // tslint:disable-next-line:variable-name
     export let __hooks__: Hooks | undefined;
 
+    /**
+     * hookable-typescript never performs startup tasks automatically, to give
+     * you a chance to install hooks first.
+     * For example, tsc.js will never parse CLI args and start compilation automatically.
+     * Instead, a function is stored here, which your bootstrapper can call
+     * after assigning hooks.
+     */
+    // tslint:disable-next-line:variable-name
+    export let __startup__: () => void | undefined;
+
     export interface Hooks {
         /** Mutate a new CompilerHost. */
         decorateCompilerHost?: (
