@@ -15,7 +15,7 @@ hypothetical `pluggable-typescript`.
 
 ## What is `hookable-typescript` vs `pluggable-typescript`?
 
-`hookable-typescript` is a patched copy of `typescript` with hooks.  We publish a new `hookable-typescript`
+`hookable-typescript` is a patched copy of `typescript` with hooks.  We can publish a new `hookable-typescript`
 for each new release of `typescript`.
 
 `pluggable-typescript` (hypothetical; does not exist yet) is a drop-in replacement for `typescript`
@@ -30,25 +30,6 @@ Tools like `ts-loader` support alternate compiler implementations.  These tools 
 In this way, `ts-loader` does not need to support custom transformers or diagnostics filtering because plugins can handle that.
 `ts-loader` can be simpler and focus solely on being a good webpack loader.
 
----
-
-## Why this approach?  Why 2 modules?
-
-Not everything can be accomplished by monkey-patching the official typescript module.
-Some things require code changes.
-
-I think it would get very messy making large changes to the Typescript codebase, since we
-want to keep up-to-date with all upstream changes.
-
-By keeping the code changes as tiny as possible, we hopefully avoid painful merges with upstream
-TypeScript changes.  When a new release of Typescript comes out, we should be able
-to publish a new version of `hookable-typescript` immediately.
-
-`pluggable-typescript` can live in its own repository without the weight of Typescript's
-massive git history, coding standards, and build process.  The bulk of development work
-will happen in `pluggable-typescript`.  It will be built against
-`hookable-typescript`'s API.
-
 ## Potential use-cases
 
 Plugins might be written to do the following:
@@ -58,7 +39,24 @@ Plugins might be written to do the following:
 * Custom diagnostic filtering.  Strip diagnostic codes that are annoying, or
 change their severity.
 
----
+## Why this approach?  Why 2 modules?
+
+Not everything can be accomplished by monkey-patching the official typescript module.
+Some things require code changes.  Hence `hookable-typescript` is necessary.
+
+However, I think it would get very messy making large changes to the Typescript codebase, since we
+want to keep up-to-date with all upstream changes.
+
+By keeping the code changes as tiny as possible, we hopefully avoid painful merges with upstream
+TypeScript releases.  When a new release of Typescript comes out, we should be able
+to merge and publish a new version of `hookable-typescript` almost immediately.
+
+Additionally, implementing larges changes in that same codebase means carrying around the
+full weight of TypeScript's massive git history, coding standards, and build process.
+
+`pluggable-typescript` should live in its own repository with a much lighter
+test harness, coding standards, etc.  The bulk of development work will happen here.
+It will be built against `hookable-typescript`'s API.
 
 ## Example usage
 
