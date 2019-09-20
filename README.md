@@ -13,6 +13,15 @@ behavior changes, etc.  I think it would be helpful to the community if all thes
 of a single plugin API.  hookable-typescript is *not* such a plugin API, but it *enables* one to be written, like the
 hypothetical `pluggable-typescript`.
 
+## Potential use-cases
+
+Plugins might be written to do the following:
+
+* yarn-pnp support: `"moduleResolution": "yarn-pnp"`
+* `ttypescript`-style transformers support
+* Custom diagnostic filtering.  Strip diagnostic codes that are annoying, or
+change their severity.
+
 ## What is `hookable-typescript` vs `pluggable-typescript`?
 
 `hookable-typescript` is a patched copy of `typescript` with hooks.  We can publish a new `hookable-typescript`
@@ -29,15 +38,6 @@ and behaves identically to `typescript@3.6.3`. (but with added plugin behaviors)
 Tools like `ts-loader` support alternate compiler implementations.  These tools can be told to use `pluggable-typescript`.
 In this way, `ts-loader` does not need to support custom transformers or diagnostics filtering because plugins can handle that.
 `ts-loader` can be simpler and focus solely on being a good webpack loader.
-
-## Potential use-cases
-
-Plugins might be written to do the following:
-
-* yarn-pnp support: `"moduleResolution": "yarn-pnp"`
-* `ttypescript`-style transformers support
-* Custom diagnostic filtering.  Strip diagnostic codes that are annoying, or
-change their severity.
 
 ## Why this approach?  Why 2 modules?
 
