@@ -21,6 +21,8 @@ Plugins might be written to do the following:
 * `ttypescript`-style transformers support
 * Custom diagnostic filtering.  Strip diagnostic codes that are annoying, or
 change their severity.
+* Emit diagnostics as parse-able JSON from the CLI
+* Add `--transpile-only` option to `tsc`
 
 ## What is `hookable-typescript` vs `pluggable-typescript`?
 
