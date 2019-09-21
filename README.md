@@ -65,13 +65,13 @@ It will be built against `hookable-typescript`'s API.
 Suppose you want to implement `pluggable-typescript`, a drop-in replacement for the `typescript` module that
 supports a plugin API.  To be a true drop-in replacement, it needs to:
 
-* a) Implement the typescript library: `require('my-pluggable-typescript')` should expose the same API as `require('typescript')`
-* b) Provide a `tsserver` executable so that editors like VSCode can use it as a language service
+* a) Implement the typescript library: `require('pluggable-typescript')` should expose the same API as `require('typescript')`.
+* b) Provide a `tsserver` executable so that editors like VSCode can use it as a language service.
 * c) Provide a `tsc`-compatible CLI tool.
 
-Step 1: Your package should contain boilerplate that looks very similar to our examples: `hookable-bin` and `hookable-lib`
+Step 1: Your package should contain boilerplate that looks very similar to our examples in `./hookable-bin/` and `./hookable-lib/` (akin to `./lib` and `./bin`)
 This is the minimum amount of code required to load hookable-typescript and delegate to it.  Without hooks installed,
-this will function identically to vanilla Typescript.
+this will function identically to vanilla TypeScript.
 
 Step 2: Modify the boilerplate files to install hooks by setting `ts.__hooks__`
 Whatever behavioral changes you want to implement -- in this case, a custom plugin architecture --
